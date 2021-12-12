@@ -1,14 +1,13 @@
 import React, { useState, useContext } from 'react';
+import DataContext from '../contexts/DataContext';
 import { Form, Button } from 'react-bootstrap';
-
+// import { FakeResponse } from './FakeResponse';
 const axios = require('axios').default;
 
 const TickerForm = () => {
 
+	const [dataContext, setDataContext] = useContext(DataContext);
 	const [symbol, setSymbol] = useState();
-	// eslint-disable-next-line
-	const [logo, setLogo] = useState();
-	// eslint-disable-next-line
 	const [name, setName] = useState();
 
 	const handleChange = (event) => {
@@ -16,17 +15,24 @@ const TickerForm = () => {
 	}
 
 	const handleSubmit = (event) => {
-		
+    
 		event.preventDefault();
 		event.stopPropagation();
+	
+		if (symbol === undefined) {
+			setDataContext({name: 'undefined'});
+			return;
+		}
 
 		const ticker = symbol.toUpperCase();
 		const secret = process.env.REACT_APP_API_KEY;
 
+		// setDataContext(FakeResponse.data);
+
 		axios(`https://api.polygon.io/v1/meta/symbols/${ticker}/company?apiKey=${secret}`)
 			.then(function (response) {
-				setLogo(response.data.logo);
-				setName(response.data.name);
+				console.log(response.data);
+				setDataContext(response.data);
 			})
 			.catch(function (error) {
 				console.error(error);
@@ -42,7 +48,7 @@ const TickerForm = () => {
 				</Form.Group>
 			</Form>
 		</>
-	)
+	);
 }
 
 export default TickerForm;
