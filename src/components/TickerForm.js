@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 const axios = require('axios').default;
@@ -6,7 +6,9 @@ const axios = require('axios').default;
 const TickerForm = () => {
 
 	const [symbol, setSymbol] = useState();
+	// eslint-disable-next-line
 	const [logo, setLogo] = useState();
+	// eslint-disable-next-line
 	const [name, setName] = useState();
 
 	const handleChange = (event) => {
@@ -29,10 +31,6 @@ const TickerForm = () => {
 			.catch(function (error) {
 				console.error(error);
 			});
-	}
-
-	const reducerFunc = () => {
-
 	}
 
 	return (

@@ -1,12 +1,10 @@
-import TickerForm from "./components/TickerForm";
-import OutputData from "./components/OutputData";
+import ParentComponent from './components/ParentComponent'
 
 const App = () => {
 
 	return (
 		<>
-			<TickerForm/>
-			<OutputData/>
+			<ParentComponent/>
 		</>
 	);
 
