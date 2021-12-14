@@ -1,14 +1,18 @@
 import React, { useState, useContext } from 'react';
 import DataContext from '../contexts/DataContext';
+import DividendContext from '../contexts/DividendContext';
 import { Form, Button } from 'react-bootstrap';
-// import { FakeResponse } from './FakeResponse';
+
 const axios = require('axios').default;
 
 const TickerForm = () => {
 
+	// eslint-disable-next-line
 	const [dataContext, setDataContext] = useContext(DataContext);
+	// eslint-disable-next-line
+    const [dividendContext, setDividendContext] = useContext(DividendContext);
+
 	const [symbol, setSymbol] = useState();
-	const [name, setName] = useState();
 
 	const handleChange = (event) => {
 		setSymbol(event.target.value);
@@ -27,15 +31,22 @@ const TickerForm = () => {
 		const ticker = symbol.toUpperCase();
 		const secret = process.env.REACT_APP_API_KEY;
 
-		// setDataContext(FakeResponse.data);
-
 		axios(`https://api.polygon.io/v1/meta/symbols/${ticker}/company?apiKey=${secret}`)
 			.then(function (response) {
-				console.log(response.data);
 				setDataContext(response.data);
+				console.log(response.data)
 			})
 			.catch(function (error) {
-				console.error(error);
+				return;
+			});
+
+		axios(`https://api.polygon.io/v2/reference/dividends/${ticker}?apiKey=${secret}`)
+			.then(function (response) {
+				setDividendContext(response.data);
+				console.log(response.data)
+			})
+			.catch(function (error) {
+				return;
 			});
 	}
 

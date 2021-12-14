@@ -1,9 +1,9 @@
-import ParentComponent from './components/ParentComponent';
+import DataProvider from './components/DataProvider';
 
 const App = () => {
 	return (
 		<>
-			<ParentComponent/>
+			<DataProvider/>
 		</>
 	);
 }
