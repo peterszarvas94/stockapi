@@ -1,27 +1,82 @@
 import React, { useContext } from 'react';
 import DividendContext from '../contexts/DividendContext';
 
-import Bar from './Bar';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip
+  } from 'chart.js';
+  import { Bar } from 'react-chartjs-2';
+  
+import '../styles/Chart.css'  
 
 const Chart = () => {
+
+    ChartJS.register(
+        CategoryScale,
+        LinearScale,
+        BarElement,
+        Title,
+        Tooltip
+        //Legend
+    );
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+                text: 'Dividents',
+            },
+            tooltip: {
+                callbacks: {
+                    title: () => false,
+                    label: (data) => data.formattedValue + ' $'
+                }
+            }
+        },
+    };
+
+    const labels = [];
+    const dividents = [];
+
+    const data = {
+        labels,
+        datasets: [{
+            label: false,
+            data: [...dividents],
+            backgroundColor: 'rgba(255, 20, 20, 0.7)',
+        }],
+    };
 
     // eslint-disable-next-line
     const [dividendContext, setDividendContext] = useContext(DividendContext);
 
-    let bars = [];
+    // const bars = [];
+    // const dates = [];
 
     if (dividendContext) {
         dividendContext.results.forEach((val, index) => {
-            bars.unshift(
-                <Bar height={val.amount * 100} key={index} title={val.amount}/>
-            )
+            if(labels.length >= 40) return;
+            labels.unshift(val.paymentDate.slice(0, 4));
+            
+            if(dividents.length >= 40) return;
+            dividents.unshift(val.amount);
         });
+
+        data.datasets[0].data = [...dividents]
     }
     
     return (
-        <>
-            {bars}
-        </>
+        <div className='chartContainer'>
+            <Bar options={options} data={data} />
+        </div>
     );
 }
 

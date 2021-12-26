@@ -24,7 +24,7 @@ const TickerForm = () => {
 		event.stopPropagation();
 	
 		if (symbol === undefined) {
-			setDataContext({name: 'undefined'});
+			setDataContext({name: ''});
 			return;
 		}
 

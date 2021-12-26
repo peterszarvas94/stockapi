@@ -7,7 +7,7 @@ import Chart from './Chart';
 
 const DataProvider = () => {
 
-	const [dataContext, setDataContext] = useState({name: 'testname'});
+	const [dataContext, setDataContext] = useState({name: ''});
 	const [dividendContext, setDividendContext] = useState({results: []});
 
 	return (
