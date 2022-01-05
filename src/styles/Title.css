@@ -1,0 +1,17 @@
+.titleContainer {
+    margin: 0 auto;
+}
+
+.titleContainer h1 {
+    font-weight: 500;
+}
+
+.exampleList {
+    font-style: italic;
+}
+
+.exampleList ul{
+    margin: 0;
+    padding: 0 1em;
+    list-style: none;
+}

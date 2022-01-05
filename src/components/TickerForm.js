@@ -1,23 +1,34 @@
 import React, { useState, useContext } from 'react';
+import { Form, Button } from 'react-bootstrap';
+
 import DataContext from '../contexts/DataContext';
 import DividendContext from '../contexts/DividendContext';
-import { Form, Button } from 'react-bootstrap';
+
+import '../styles/Form.css';
 
 const axios = require('axios').default;
 
 const TickerForm = () => {
 
+	//using DataContext
 	// eslint-disable-next-line
 	const [dataContext, setDataContext] = useContext(DataContext);
+
+	//using DividendContext
 	// eslint-disable-next-line
     const [dividendContext, setDividendContext] = useContext(DividendContext);
 
+	//defining variables
 	const [symbol, setSymbol] = useState();
+	const apiKey = process.env.REACT_APP_API_KEY;
 
+	//updating symbol value
 	const handleChange = (event) => {
-		setSymbol(event.target.value);
+		const newValue = event.target.value;
+		setSymbol(newValue);
 	}
 
+	//getting the data on submit
 	const handleSubmit = (event) => {
     
 		event.preventDefault();
@@ -28,36 +39,36 @@ const TickerForm = () => {
 			return;
 		}
 
-		const ticker = symbol.toUpperCase();
-		const secret = process.env.REACT_APP_API_KEY;
+		const upperCaseSymbol = symbol.toUpperCase();
 
-		axios(`https://api.polygon.io/v1/meta/symbols/${ticker}/company?apiKey=${secret}`)
-			.then(function (response) {
+		axios(`https://api.polygon.io/v1/meta/symbols/${upperCaseSymbol}/company?apiKey=${apiKey}`)
+			.then((response) => {
 				setDataContext(response.data);
-				console.log(response.data)
+				// console.log(response.data)
 			})
-			.catch(function (error) {
+			.catch((error) => {
 				return;
 			});
 
-		axios(`https://api.polygon.io/v2/reference/dividends/${ticker}?apiKey=${secret}`)
-			.then(function (response) {
+		axios(`https://api.polygon.io/v2/reference/dividends/${upperCaseSymbol}?apiKey=${apiKey}`)
+			.then((response) => {
 				setDividendContext(response.data);
-				console.log(response.data)
+				// console.log(response.data)
 			})
-			.catch(function (error) {
+			.catch((error) => {
 				return;
 			});
 	}
 
+	//rendering
 	return (
 		<>
-			<Form onSubmit={handleSubmit}>
-				<Form.Group controlId='symbol'>
-					<Form.Control type='text' placeholder='Ticket symbol' onChange={handleChange}/>
-					<Button variant='primary' type='sumbit'>Search</Button>
-				</Form.Group>
-			</Form>
+			<div className='formContainer'>
+				<Form onSubmit={handleSubmit}>
+					<Form.Control id='symbol' type='text' placeholder='Ticket symbol' onChange={handleChange}/>
+					<Button type='sumbit'>Search</Button>
+				</Form>
+			</div>
 		</>
 	);
 }

@@ -1,4 +1,7 @@
 .chartContainer {
-    max-width: 800px;
     margin: 0 auto;
+}
+
+.chartContainer canvas {
+    max-height: 400px;
 }

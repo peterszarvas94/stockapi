@@ -1,0 +1,14 @@
+.outputContainer {
+    margin: 1em auto;
+}
+
+.outputContainer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.companyLogo {
+    height: 2em;
+    border: 1px solid red;
+}

@@ -15,67 +15,88 @@ import '../styles/Chart.css'
 
 const Chart = () => {
 
+    //register chart.js elements
     ChartJS.register(
         CategoryScale,
         LinearScale,
         BarElement,
         Title,
         Tooltip
-        //Legend
     );
 
+    //setting chart.js options
     const options = {
         responsive: true,
+        scales: {
+            x: {
+                ticks: {
+                    callback: function (val, index) {
+                        return this.getLabelForValue(val).slice(0,4);
+                    }
+                }
+            }
+        },
         plugins: {
             legend: {
                 display: false,
             },
             title: {
                 display: true,
-                text: 'Dividents',
+                text: 'Dividends',
+                font: {
+                    size: 20
+                }
             },
             tooltip: {
+                displayColors: false,
                 callbacks: {
-                    title: () => false,
-                    label: (data) => data.formattedValue + ' $'
+                    title: data => data[0].label,
+                    label: (data) => '$ ' + data.formattedValue
                 }
             }
-        },
+        }
     };
 
+    //defining the labels and values for the chart
     const labels = [];
-    const dividents = [];
+    const dividends = [];
 
+    //providing the data options
     const data = {
         labels,
         datasets: [{
-            label: false,
-            data: [...dividents],
+            // label: false,
+            data: [...dividends],
             backgroundColor: 'rgba(255, 20, 20, 0.7)',
         }],
     };
 
+    //using the DividendContext
     // eslint-disable-next-line
     const [dividendContext, setDividendContext] = useContext(DividendContext);
 
-    // const bars = [];
-    // const dates = [];
-
+    //filling up labels and dividends
     if (dividendContext) {
         dividendContext.results.forEach((val, index) => {
             if(labels.length >= 40) return;
-            labels.unshift(val.paymentDate.slice(0, 4));
+            labels.unshift(val.paymentDate);
             
-            if(dividents.length >= 40) return;
-            dividents.unshift(val.amount);
+            if(dividends.length >= 40) return;
+            dividends.unshift(val.amount);
         });
 
-        data.datasets[0].data = [...dividents]
+        data.datasets[0].data = [...dividends]
     }
     
+    //rendering
     return (
         <div className='chartContainer'>
-            <Bar options={options} data={data} />
+            {(dividends.length === 0) &&
+                <div>
+                    This company has no dividends
+                </div>
+            }
+            {(dividends.length > 0) && <Bar options={options} data={data} />}
         </div>
     );
 }
