@@ -104,7 +104,7 @@ const Chart = () => {
             }
             {dataContext && (dataContext.error === 429) &&
                 <div>
-                    Too many requests - <i>Sorry I have free plan, try again in 10 sec</i>
+                    Too many requests - <i>Data is limited, try again in 1 min</i>
                 </div>
             }
             {dataContext && (!dataContext.error) && (dividends.length === 0) &&
