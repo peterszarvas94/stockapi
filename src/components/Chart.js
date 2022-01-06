@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import DividendContext from '../contexts/DividendContext';
+import DataContext from '../contexts/DataContext';
 
 import {
     Chart as ChartJS,
@@ -71,9 +72,13 @@ const Chart = () => {
         }],
     };
 
-    //using the DividendContext
-    // eslint-disable-next-line
-    const [dividendContext, setDividendContext] = useContext(DividendContext);
+    //using DataContext
+	// eslint-disable-next-line
+	const [dataContext, setDataContext] = useContext(DataContext);
+
+	//using DividendContext
+	// eslint-disable-next-line
+	const [dividendContext, setDividendContext] = useContext(DividendContext);
 
     //filling up labels and dividends
     if (dividendContext) {
@@ -88,15 +93,28 @@ const Chart = () => {
         data.datasets[0].data = [...dividends]
     }
     
+
     //rendering
     return (
         <div className='chartContainer'>
-            {(dividends.length === 0) &&
+            {!dataContext &&
+                <div>
+                    Please search for a valid ticker symbol
+                </div>
+            }
+            {dataContext && (dataContext.error === 429) &&
+                <div>
+                    Too many requests - <i>Sorry I have free plan, try again in 10 sec</i>
+                </div>
+            }
+            {dataContext && (!dataContext.error) && (dividends.length === 0) &&
                 <div>
                     This company has no dividends
                 </div>
             }
-            {(dividends.length > 0) && <Bar options={options} data={data} />}
+            {dataContext && dividendContext && (!dataContext.error) && (dividends.length > 0) &&
+                <Bar options={options} data={data} />
+            }
         </div>
     );
 }

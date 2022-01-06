@@ -2,13 +2,19 @@
     margin: 1em auto;
 }
 
-.outputContainer ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.outputContainer img {
+    max-height: 3em;
+    max-width: 3em;
+    margin: 0 .7em 1em 0;
+    display: inline-block;
 }
 
-.companyLogo {
-    height: 2em;
-    border: 1px solid red;
+.outputContainer h4 {
+    display: inline-block;
+    margin: 0 0 .5em 0;
+}
+
+.outputContainer a {
+    display: block;
+    margin: 0 0 0 .5em;
 }
